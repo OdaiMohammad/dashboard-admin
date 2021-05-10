@@ -1,6 +1,7 @@
 package ae.accumed.dashboardadmin.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 
@@ -22,4 +23,12 @@ public class UserResponse {
         else
             this.name = name;
     }
+
+    public UserResponse(String userName, boolean isActive, String name, ArrayList<String> facilityLicences) {
+        this.userName = userName;
+        this.isActive = isActive;
+        this.name = name;
+        this.facilityLicences = facilityLicences;
+    }
+
 }

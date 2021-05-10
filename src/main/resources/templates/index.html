@@ -8,66 +8,44 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"
             integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 
-    <!-- Select2 CSS-->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <!-- DataTable CSS-->
+    <link href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" rel="stylesheet"/>
 
-    <!-- Select2 JS-->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- DataTable JS-->
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
 </head>
 <body>
-<form method="POST" th:object="${submission}" id="application-form">
-    <select id="userName" name="userName" class="select2-selector">
-        <option disabled selected>Select user</option>
-        <!--/*@thymesVar id="user" type="ae.accumed.dashboardadmin.model.UserResponse"*/-->
-        <option th:each="user: ${data.getUserResponses()}"
-                th:value="${user.userName}"
-                th:text="${user.name}"
-                th:if="${user.isActive}">
-        </option>
-    </select>
+<table id="myTable" class="display">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Facilities</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--/*@thymesVar id="user" type="ae.accumed.dashboardadmin.model.UserResponse"*/-->
+    <tr th:each="user: ${data.getUserResponses()}">
+        <td th:text="${user.name}">Row 1 Data 1</td>
+        <td>
+            <!--/*@thymesVar id="facility" type="ae.accumed.dashboardadmin.entities.Facility"*/-->
+            <div th:each="facility: ${data.getFacilities()}" th:text="${facility.facilityName}"
+                 th:if="${user.getFacilityLicences().contains(facility.facilityLicence)}"></div>
+        </td>
+        <td>
+            <form method="GET" th:action="@{/edit/{userName}(userName=${user.userName})}">
+                <input type="submit" value="Edit">
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
-    <select id="facilityLicences" name="facilityLicences" class="select-facility-multiple select2-selector"
-            multiple="multiple">
-        <!--/*@thymesVar id="facility" type="ae.accumed.dashboardadmin.entities.Facility"*/-->
-        <option th:each="facility: ${data.getFacilities()}"
-                th:value="${facility.facilityLicence}"
-                th:text="${facility.facilityName}"
-                th:if="${!facility.isDeleted}">
-        </option>
-    </select>
-
-    <input type="submit" value="Submit">
-
-    <div th:switch="${message}">
-        <div th:case="'Success'" class="alert alert-success">
-            <strong>Success!</strong> Operation performed successfully.
-        </div>
-        <div th:case="'Failed'" class="alert alert-danger">
-            <strong>Failure!</strong> Operation failed. Please try again
-        </div>
-    </div>
-</form>
-
-<script type="text/javascript">
+<script>
     $(document).ready(function () {
-        $(".select2-selector").select2();
+        $('#myTable').DataTable();
     });
 </script>
-
-<script type="text/javascript" th:inline="javascript">
-    let users =/*[[${data.getUserResponses()}]]*/ 'defaultanyvalue';
-    let userSelector = document.getElementById("userName");
-
-    function listQ() {
-        let result = users.filter(user => {
-            return user.userName === userSelector.value
-        })[0]
-        $(".select-facility-multiple").val(result.facilityLicences).trigger('change');
-    }
-
-    document.getElementById("userName").onchange = listQ;
-</script>
-
 </body>
 </html>

@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit</title>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+    <!-- Select2 CSS-->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+
+    <!-- Select2 JS-->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+</head>
+<body>
+<form method="POST" th:action="@{/edit}" th:object="${submission}" id="application-form">
+    <select id="userName" name="userName" class="select2-selector">
+        <option disabled selected>Select user</option>
+        <!--/*@thymesVar id="user" type="ae.accumed.dashboardadmin.model.UserResponse"*/-->
+        <option th:each="user: ${data.getUserResponses()}"
+                th:value="${user.userName}"
+                th:text="${user.name}"
+                th:if="${user.isActive}"
+                th:selected="${user.getUserName().equals(currentUser.getUserName())}">
+        </option>
+    </select>
+
+    <select id="facilityLicences" name="facilityLicences" class="select-facility-multiple select2-selector"
+            multiple="multiple">
+        <!--/*@thymesVar id="facility" type="ae.accumed.dashboardadmin.entities.Facility"*/-->
+        <option th:each="facility: ${data.getFacilities()}"
+                th:value="${facility.facilityLicence}"
+                th:text="${facility.facilityName}"
+                th:if="${!facility.isDeleted}"
+                th:selected="${currentUser.getFacilityLicences().contains(facility.facilityLicence)}">
+        </option>
+    </select>
+
+    <input type="submit" value="Submit">
+
+    <div th:switch="${message}">
+        <div th:case="'Success'" class="alert alert-success">
+            <strong>Success!</strong> Operation performed successfully.
+        </div>
+        <div th:case="'Failed'" class="alert alert-danger">
+            <strong>Failure!</strong> Operation failed. Please try again
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".select2-selector").select2();
+    });
+</script>
+
+<script type="text/javascript" th:inline="javascript">
+    let users =/*[[${data.getUserResponses()}]]*/ 'defaultanyvalue';
+    let userSelector = document.getElementById("userName");
+
+    function listQ() {
+        let result = users.filter(user => {
+            return user.userName === userSelector.value
+        })[0]
+        $(".select-facility-multiple").val(result.facilityLicences).trigger('change');
+    }
+
+    document.getElementById("userName").onchange = listQ;
+</script>
+
+</body>
+</html>
