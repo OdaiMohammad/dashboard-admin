@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -22,7 +23,7 @@ public class AppController {
     private final UserDashboardService userDashboardService;
 
     @Autowired
-    public AppController(IndexService indexService,UserDashboardService userDashboardService) {
+    public AppController(IndexService indexService, UserDashboardService userDashboardService) {
         this.indexService = indexService;
         this.userDashboardService = userDashboardService;
     }
@@ -36,10 +37,19 @@ public class AppController {
     }
 
     @PostMapping
-    public String saveUserData(@Valid Submission submission, Errors errors) {
+    public String saveUserData(@Valid Submission submission, Errors errors, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("message", "Failed");
+        redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
         if (errors.hasErrors())
-            return "index";
-        userDashboardService.saveUserDashboard(submission);
+            return "redirect:/";
+        try {
+            userDashboardService.saveUserDashboard(submission);
+            redirectAttributes.addFlashAttribute("message", "Success");
+            redirectAttributes.addFlashAttribute("alertClass", "alert-success");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", "Failed");
+            redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+        }
         return "redirect:/";
     }
 }

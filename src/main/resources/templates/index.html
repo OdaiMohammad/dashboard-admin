@@ -17,8 +17,8 @@
 </head>
 <body>
 <form method="POST" th:object="${submission}" id="application-form">
-    <label for="userName">Select user</label>
     <select id="userName" name="userName" class="select2-selector">
+        <option disabled selected>Select user</option>
         <!--/*@thymesVar id="user" type="ae.accumed.dashboardadmin.model.UserResponse"*/-->
         <option th:each="user: ${data.getUserResponses()}"
                 th:value="${user.userName}"
@@ -27,19 +27,26 @@
         </option>
     </select>
 
-    <label for="facilityLicences">Select facilities</label>
     <select id="facilityLicences" name="facilityLicences" class="select-facility-multiple select2-selector"
             multiple="multiple">
         <!--/*@thymesVar id="facility" type="ae.accumed.dashboardadmin.entities.Facility"*/-->
         <option th:each="facility: ${data.getFacilities()}"
                 th:value="${facility.facilityLicence}"
                 th:text="${facility.facilityName}"
-                th:if="${!facility.isDeleted}"
-                th:selected="${data.getUserResponses().get(0).getFacilityLicences().contains(facility.facilityLicence)}">
+                th:if="${!facility.isDeleted}">
         </option>
     </select>
 
     <input type="submit" value="Submit">
+
+    <div th:switch="${message}">
+        <div th:case="'Success'" class="alert alert-success">
+            <strong>Success!</strong> Operation performed successfully.
+        </div>
+        <div th:case="'Failed'" class="alert alert-danger">
+            <strong>Failure!</strong> Operation failed. Please try again
+        </div>
+    </div>
 </form>
 
 <script type="text/javascript">
