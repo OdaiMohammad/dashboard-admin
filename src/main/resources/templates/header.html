@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="header" class="cbp-af-header"
+     style="margin-bottom: 2.5em;padding: 1em 0 1em 1em;border-width: 2px; background-color: #007bff">
+    <div class="cbp-af-inner">
+        <h1 style="color:#FFFFFF;">Dashboard</h1>
+        <nav>
+            <form method="GET" th:action="@{/}">
+                <input type="submit" value="Home" class="btn btn-primary">
+            </form>
+            <form method="GET" th:action="@{/edit}">
+                <input type="submit" value="Edit all" class="btn btn-primary">
+            </form>
+        </nav>
+    </div>
+</div>
+</body>
+</html>

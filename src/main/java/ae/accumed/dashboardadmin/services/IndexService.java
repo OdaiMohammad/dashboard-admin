@@ -34,9 +34,10 @@ public class IndexService {
         ArrayList<Facility> facilities = (ArrayList<Facility>) facilityRepository.findAll();
         ArrayList<UserResponse> userResponses = (ArrayList<UserResponse>) users.stream().map(user -> new UserResponse(user.getUserName(), user.isActive(), user.getName())).collect(Collectors.toList());
         userResponses.forEach(userResponse -> userResponse.setFacilityLicences(getUserFacilityLicences(userResponse.getUserName())));
+        ArrayList<UserResponse> filteredUserResponses = (ArrayList<UserResponse>) userResponses.stream().filter(user -> !user.getFacilityLicences().isEmpty()).collect(Collectors.toList());
         IndexResponse indexResponse = new IndexResponse();
         indexResponse.setFacilities(facilities);
-        indexResponse.setUserResponses(userResponses);
+        indexResponse.setUserResponses(filteredUserResponses);
         return indexResponse;
     }
 

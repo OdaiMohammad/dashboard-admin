@@ -12,11 +12,4 @@ import java.util.Optional;
 public class IndexResponse {
     private ArrayList<UserResponse> userResponses;
     private ArrayList<Facility> facilities;
-
-    public ArrayList<String> getUserFacilityLicences(String userName) {
-        Optional<UserResponse> userResponseOptional = userResponses.stream().filter(response -> response.getUserName().equals(userName)).findFirst();
-        if(userResponseOptional.isPresent())
-            return userResponseOptional.get().getFacilityLicences();
-        return new ArrayList<>();
-    }
 }

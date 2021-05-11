@@ -19,73 +19,66 @@
     <!-- Select2 JS-->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+    <link rel="stylesheet" th:href="@{/css/edit.css}"/>
 </head>
 <body>
-<div class="cbp-af-header" style="margin-left: 2.5em;padding: 0 7em 2em 0;border-width: 2px;">
-    <div class="cbp-af-inner">
-        <h1>Dashboard</h1>
-        <nav>
-            <a th:href="@{/}">Home</a>
-            <a th:href="@{/edit}">Edit all</a>
-        </nav>
-    </div>
-</div>
-<div class="container-md">
-    <form method="POST" th:action="@{/edit}" th:object="${submission}" id="application-form">
-        <div class="container-md">
+<header th:insert="header.html :: header"></header>
+<form method="POST" th:action="@{/edit}" th:object="${submission}" id="application-form">
+    <div class="container-fluid">
+        <div class="row">
 
-            <div class="row-cols-md-1">
-                <div class="column">
-                    <select id="userName" name="userName" class="select2-selector">
-                        <option disabled selected>Select user</option>
-                        <!--/*@thymesVar id="user" type="ae.accumed.dashboardadmin.model.UserResponse"*/-->
-                        <option th:each="user: ${data.getUserResponses()}"
-                                th:value="${user.userName}"
-                                th:text="${user.name}"
-                                th:if="${user.isActive}"
-                                th:selected="${user.getUserName().equals(currentUser.getUserName())}">
-                        </option>
-                    </select>
-                </div>
+            <div class="col-6">
+                <select id="userName" name="userName" class="select2-selector "
+                        style="width: 50%">
+                    <option disabled selected>Select user</option>
+                    <!--/*@thymesVar id="user" type="ae.accumed.dashboardadmin.model.UserResponse"*/-->
+                    <option th:each="user: ${data.getUserResponses()}"
+                            th:value="${user.userName}"
+                            th:text="${user.name}"
+                            th:if="${user.isActive}"
+                            th:selected="${user.getUserName().equals(currentUser.getUserName())}">
+                    </option>
+                </select>
             </div>
 
-            <div class="row-cols-md-1-cols-md-1">
-                <div class="column">
-                    <select id="facilityLicences" name="facilityLicences"
-                            class="select-facility-multiple select2-selector"
-                            multiple="multiple">
-                        <!--/*@thymesVar id="facility" type="ae.accumed.dashboardadmin.entities.Facility"*/-->
-                        <option th:each="facility: ${data.getFacilities()}"
-                                th:value="${facility.facilityLicence}"
-                                th:text="${facility.facilityName}"
-                                th:if="${!facility.isDeleted}"
-                                th:selected="${currentUser.getFacilityLicences().contains(facility.facilityLicence)}">
-                        </option>
-                    </select>
-                </div>
+            <div class="w-100"></div>
+
+            <div class="col-6">
+                <select id="facilityLicences" name="facilityLicences"
+                        class="select-facility-multiple select2-selector "
+                        multiple="multiple"
+                        style="width: 50%">
+                    <!--/*@thymesVar id="facility" type="ae.accumed.dashboardadmin.entities.Facility"*/-->
+                    <option th:each="facility: ${data.getFacilities()}"
+                            th:value="${facility.facilityLicence}"
+                            th:text="${facility.facilityName}"
+                            th:if="${!facility.isDeleted}"
+                            th:selected="${currentUser.getFacilityLicences().contains(facility.facilityLicence)}">
+                    </option>
+                </select>
             </div>
 
-            <div class="row-cols-md-1">
-                <div class="column">
-                    <input type="submit" value="Submit">
-                </div>
+            <div class="w-100"></div>
+
+            <div class="col-6">
+                <input type="submit" value="Submit" class="btn btn-primary">
             </div>
 
-            <div class="row-cols-md-1">
-                <div class="column">
-                    <div th:switch="${message}">
-                        <div th:case="'Success'" class="alert alert-success">
-                            <strong>Success!</strong> Operation performed successfully.
-                        </div>
-                        <div th:case="'Failed'" class="alert alert-danger">
-                            <strong>Failure!</strong> Operation failed. Please try again
-                        </div>
+            <div class="w-100"></div>
+
+            <div class="col-6">
+                <div th:switch="${message}">
+                    <div th:case="'Success'" class="alert alert-success">
+                        <strong>Success!</strong> Operation performed successfully.
+                    </div>
+                    <div th:case="'Failed'" class="alert alert-danger">
+                        <strong>Failure!</strong> Operation failed. Please try again
                     </div>
                 </div>
             </div>
         </div>
-    </form>
-</div>
+    </div>
+</form>
 <script type="text/javascript">
     $(document).ready(function () {
         $(".select2-selector").select2();
