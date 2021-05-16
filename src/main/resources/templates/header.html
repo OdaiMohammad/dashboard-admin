@@ -8,7 +8,19 @@
 <div th:fragment="header" class="cbp-af-header"
      style="margin-bottom: 2.5em;padding: 1em 0 1em 1em;border-width: 2px; background-color: #007bff">
     <div class="cbp-af-inner">
-        <h1 style="color:#FFFFFF;">Dashboard</h1>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-10">
+                    <h1 style="color:#FFFFFF;">Dashboard</h1>
+                    <h5 style="color:#FFFFFF;">Welcome, Admin!</h5>
+                </div>
+                <div class="col-2">
+                    <form method="POST" th:action="@{/logout}">
+                        <input type="submit" value="Log out" class="btn btn-primary">
+                    </form>
+                </div>
+            </div>
+        </div>
         <nav>
             <form method="GET" th:action="@{/}">
                 <input type="submit" value="Home" class="btn btn-primary">
