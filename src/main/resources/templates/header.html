@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/header.css}"/>
 </head>
 <body>
 <div th:fragment="header" class="cbp-af-header"
@@ -10,23 +12,25 @@
     <div class="cbp-af-inner">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-10">
+                <div class="col-9">
                     <h1 style="color:#FFFFFF;">Dashboard</h1>
-                    <h5 style="color:#FFFFFF;">Welcome, Admin!</h5>
                 </div>
-                <div class="col-2">
-                    <form method="POST" th:action="@{/logout}">
-                        <input type="submit" value="Log out" class="btn btn-primary">
-                    </form>
+                <div class="col-3">
+                    <nav>
+                        <h6 style="color:#FFFFFF;display: inline-block">Welcome, Admin!</h6>
+                        <form method="POST" th:action="@{/logout}" style="display: inline-block">
+                            <input type="submit" value="Log out" class="btn btn-primary">
+                        </form>
+                    </nav>
                 </div>
             </div>
         </div>
         <nav>
-            <form method="GET" th:action="@{/}">
-                <input type="submit" value="Home" class="btn btn-primary">
+            <form method="GET" th:action="@{/}" style="display: inline-block">
+                <input type="submit" value="List all access" class="btn btn-primary">
             </form>
-            <form method="GET" th:action="@{/edit}">
-                <input type="submit" value="Edit all" class="btn btn-primary">
+            <form method="GET" th:action="@{/edit}" class="nav-form" style="display: inline-block">
+                <input type="submit" value="Edit access" class="btn btn-primary">
             </form>
         </nav>
     </div>
