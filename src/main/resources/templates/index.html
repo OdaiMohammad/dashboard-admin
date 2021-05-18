@@ -35,13 +35,13 @@
         <tr th:each="user: ${data.getUserResponses()}">
             <td th:text="${user.name} + ' / ' + ${user.userName}">Row 1 Data 1</td>
             <td>
-                <!--/*@thymesVar id="facility" type="ae.accumed.dashboardadmin.entities.Facility"*/-->
-                <div th:each="facility: ${data.getFacilities()}" th:text="${facility.facilityName}"
-                     th:if="${user.getFacilityLicences().contains(facility.facilityLicence)}"></div>
+                <!--/*@thymesVar id="hospital" type="ae.accumed.dashboardadmin.model.Hospital"*/-->
+                <div th:each="hospital: ${data.getHospitals()}" th:text="${hospital.getHospitalName}"
+                     th:if="${user.getHospitalIds().contains(hospital.getHospitalId)}"></div>
             </td>
             <td>
                 <form method="GET" th:action="@{/edit/{userName}(userName=${user.userName})}">
-                    <input type="submit" value="Edit">
+                    <input type="submit" value="Edit" class="btn btn-primary">
                 </form>
             </td>
         </tr>

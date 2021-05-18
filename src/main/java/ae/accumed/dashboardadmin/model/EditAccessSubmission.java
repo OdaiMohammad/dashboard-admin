@@ -5,8 +5,8 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class Submission {
+public class EditAccessSubmission {
     private String userName;
 
-    private List<String> facilityLicences;
+    private List<String> hospitalIds;
 }

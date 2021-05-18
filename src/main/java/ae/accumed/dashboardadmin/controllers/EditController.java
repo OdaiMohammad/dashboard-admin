@@ -1,7 +1,7 @@
 package ae.accumed.dashboardadmin.controllers;
 
 import ae.accumed.dashboardadmin.model.IndexResponse;
-import ae.accumed.dashboardadmin.model.Submission;
+import ae.accumed.dashboardadmin.model.EditAccessSubmission;
 import ae.accumed.dashboardadmin.model.UserResponse;
 import ae.accumed.dashboardadmin.services.IndexService;
 import ae.accumed.dashboardadmin.services.UserDashboardService;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -36,9 +35,9 @@ public class EditController {
 
     @GetMapping
     public String edit(Model model) {
-        IndexResponse indexResponse = indexService.getIndexData();
+        IndexResponse indexResponse = userDashboardService.getEditData();
         model.addAttribute("data", indexResponse);
-        model.addAttribute("submission", new Submission());
+        model.addAttribute("submission", new EditAccessSubmission());
         model.addAttribute("currentUser", new UserResponse("", false, "", new ArrayList<>()));
         return "edit";
     }
@@ -47,7 +46,7 @@ public class EditController {
     public String edit(Model model, @PathVariable String userName) {
         IndexResponse indexResponse = indexService.getIndexData();
         model.addAttribute("data", indexResponse);
-        model.addAttribute("submission", new Submission());
+        model.addAttribute("submission", new EditAccessSubmission());
         if (userName != null) {
             Optional<UserResponse> currentUserResponseOptional = indexResponse.getUserResponses().stream().filter(userResponse -> userResponse.getUserName().equals(userName)).findFirst();
             currentUserResponseOptional.ifPresent(userResponse -> model.addAttribute("currentUser", userResponse));
@@ -58,13 +57,13 @@ public class EditController {
     }
 
     @PostMapping
-    public String saveUserData(@Valid Submission submission, Errors errors, RedirectAttributes redirectAttributes) {
+    public String saveUserData(EditAccessSubmission editAccessSubmission, Errors errors, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("message", "Failed");
         redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
         if (errors.hasErrors())
             return "redirect:/edit";
         try {
-            userDashboardService.saveUserDashboard(submission);
+            userDashboardService.saveUserDashboard(editAccessSubmission);
             redirectAttributes.addFlashAttribute("message", "Success");
             redirectAttributes.addFlashAttribute("alertClass", "alert-success");
         } catch (Exception e) {

@@ -1,11 +1,12 @@
 package ae.accumed.dashboardadmin.services;
 
-import ae.accumed.dashboardadmin.entities.Facility;
+import ae.accumed.dashboardadmin.entities.Cluster;
+import ae.accumed.dashboardadmin.model.Hospital;
 import ae.accumed.dashboardadmin.entities.User;
 import ae.accumed.dashboardadmin.entities.UserDashboard;
 import ae.accumed.dashboardadmin.model.IndexResponse;
 import ae.accumed.dashboardadmin.model.UserResponse;
-import ae.accumed.dashboardadmin.repositories.FacilityRepository;
+import ae.accumed.dashboardadmin.repositories.ClusterRepository;
 import ae.accumed.dashboardadmin.repositories.UserDashboardRepository;
 import ae.accumed.dashboardadmin.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,25 +19,24 @@ import java.util.stream.Collectors;
 @Service
 public class IndexService {
     private final UserRepository userRepository;
-    private final FacilityRepository facilityRepository;
+    private final ClusterRepository clusterRepository;
     private final UserDashboardRepository userDashboardRepository;
 
     @Autowired
-    public IndexService(UserRepository userRepository, FacilityRepository facilityRepository, UserDashboardRepository userDashboardRepository) {
+    public IndexService(UserRepository userRepository, ClusterRepository clusterRepository, UserDashboardRepository userDashboardRepository) {
         this.userRepository = userRepository;
-        this.facilityRepository = facilityRepository;
+        this.clusterRepository = clusterRepository;
         this.userDashboardRepository = userDashboardRepository;
     }
 
-
     public IndexResponse getIndexData() {
-        ArrayList<User> users = (ArrayList<User>) userRepository.findAll();
-        ArrayList<Facility> facilities = (ArrayList<Facility>) facilityRepository.findAll();
-        ArrayList<UserResponse> userResponses = (ArrayList<UserResponse>) users.stream().map(user -> new UserResponse(user.getUserName(), user.isActive(), user.getName())).collect(Collectors.toList());
-        userResponses.forEach(userResponse -> userResponse.setFacilityLicences(getUserFacilityLicences(userResponse.getUserName())));
-        ArrayList<UserResponse> filteredUserResponses = (ArrayList<UserResponse>) userResponses.stream().filter(user -> !user.getFacilityLicences().isEmpty()).collect(Collectors.toList());
+        List<User> users = (List<User>) userRepository.findAll();
+        List<Cluster> clusters = (List<Cluster>) clusterRepository.findAll();
+        List<UserResponse> userResponses =  users.stream().map(user -> new UserResponse(user.getUserName(), user.isActive(), user.getName())).collect(Collectors.toList());
+        userResponses.forEach(userResponse -> userResponse.setHospitalIds(getUserFacilityLicences(userResponse.getUserName())));
+        ArrayList<UserResponse> filteredUserResponses = (ArrayList<UserResponse>) userResponses.stream().filter(user -> !user.getHospitalIds().isEmpty()).collect(Collectors.toList());
         IndexResponse indexResponse = new IndexResponse();
-        indexResponse.setFacilities(facilities);
+        indexResponse.setHospitals(clusters.stream().map(cluster -> new Hospital(cluster.getHospitalId(), cluster.getHospitalName())).collect(Collectors.toList()));
         indexResponse.setUserResponses(filteredUserResponses);
         return indexResponse;
     }

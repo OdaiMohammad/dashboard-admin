@@ -1,7 +1,7 @@
 package ae.accumed.dashboardadmin.controllers;
 
 import ae.accumed.dashboardadmin.model.IndexResponse;
-import ae.accumed.dashboardadmin.model.Submission;
+import ae.accumed.dashboardadmin.model.EditAccessSubmission;
 import ae.accumed.dashboardadmin.services.IndexService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class AppController {
     String index(Model model) {
         IndexResponse indexResponse = indexService.getIndexData();
         model.addAttribute("data", indexResponse);
-        model.addAttribute("submission", new Submission());
+        model.addAttribute("submission", new EditAccessSubmission());
         return "index";
     }
 }

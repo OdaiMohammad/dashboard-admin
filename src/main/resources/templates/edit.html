@@ -44,16 +44,15 @@
             <div class="w-100"></div>
 
             <div class="col-6">
-                <select id="facilityLicences" name="facilityLicences"
-                        class="select-facility-multiple select2-selector "
+                <select id="hospitalIds" name="hospitalIds"
+                        class="select-hospital-multiple select2-selector "
                         multiple="multiple"
                         style="width: 50%">
-                    <!--/*@thymesVar id="facility" type="ae.accumed.dashboardadmin.entities.Facility"*/-->
-                    <option th:each="facility: ${data.getFacilities()}"
-                            th:value="${facility.facilityLicence}"
-                            th:text="${facility.facilityName}"
-                            th:if="${!facility.isDeleted}"
-                            th:selected="${currentUser.getFacilityLicences().contains(facility.facilityLicence)}">
+                    <!--/*@thymesVar id="hospital" type="ae.accumed.dashboardadmin.model.Hospital"*/-->
+                    <option th:each="hospital: ${data.getHospitals()}"
+                            th:value="${hospital.getHospitalId}"
+                            th:text="${hospital.getHospitalName}"
+                            th:selected="${currentUser.getHospitalIds().contains(hospital.getHospitalId)}">
                     </option>
                 </select>
             </div>
@@ -61,7 +60,7 @@
             <div class="w-100"></div>
 
             <div class="col-6">
-                <input type="submit" value="Submit" class="btn btn-primary">
+                <input type="submit" value="Save" class="btn btn-primary">
             </div>
 
             <div class="w-100"></div>
@@ -93,7 +92,7 @@
         let result = users.filter(user => {
             return user.userName === userSelector.value
         })[0]
-        $(".select-facility-multiple").val(result.facilityLicences).trigger('change');
+        $(".select-hospital-multiple").val(result.hospitalIds).trigger('change');
     }
 
     document.getElementById("userName").onchange = listQ;
