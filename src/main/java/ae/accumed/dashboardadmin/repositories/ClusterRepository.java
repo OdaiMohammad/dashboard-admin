@@ -1,7 +1,10 @@
 package ae.accumed.dashboardadmin.repositories;
 
 import ae.accumed.dashboardadmin.entities.Cluster;
+import ae.accumed.dashboardadmin.entities.UserDashboard;
 import org.springframework.data.repository.CrudRepository;
 
 public interface ClusterRepository extends CrudRepository<Cluster, String> {
+    Iterable<Cluster> findAllByClustering(String clustering);
+
 }

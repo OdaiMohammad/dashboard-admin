@@ -2,7 +2,7 @@ package ae.accumed.dashboardadmin.controllers;
 
 import ae.accumed.dashboardadmin.model.IndexResponse;
 import ae.accumed.dashboardadmin.model.EditAccessSubmission;
-import ae.accumed.dashboardadmin.model.UserResponse;
+import ae.accumed.dashboardadmin.model.IndexUserResponse;
 import ae.accumed.dashboardadmin.services.IndexService;
 import ae.accumed.dashboardadmin.services.UserDashboardService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,7 @@ public class EditController {
         IndexResponse indexResponse = userDashboardService.getEditData();
         model.addAttribute("data", indexResponse);
         model.addAttribute("submission", new EditAccessSubmission());
-        model.addAttribute("currentUser", new UserResponse("", false, "", new ArrayList<>()));
+        model.addAttribute("currentUser", new IndexUserResponse("", false, "", new ArrayList<>()));
         return "edit";
     }
 
@@ -48,10 +48,10 @@ public class EditController {
         model.addAttribute("data", indexResponse);
         model.addAttribute("submission", new EditAccessSubmission());
         if (userName != null) {
-            Optional<UserResponse> currentUserResponseOptional = indexResponse.getUserResponses().stream().filter(userResponse -> userResponse.getUserName().equals(userName)).findFirst();
-            currentUserResponseOptional.ifPresent(userResponse -> model.addAttribute("currentUser", userResponse));
+            Optional<IndexUserResponse> currentUserResponseOptional = indexResponse.getIndexUserResponses().stream().filter(indexUserResponse -> indexUserResponse.getUserName().equals(userName)).findFirst();
+            currentUserResponseOptional.ifPresent(indexUserResponse -> model.addAttribute("currentUser", indexUserResponse));
         } else {
-            model.addAttribute("currentUser", new UserResponse("", false, "", new ArrayList<>()));
+            model.addAttribute("currentUser", new IndexUserResponse("", false, "", new ArrayList<>()));
         }
         return "edit";
     }

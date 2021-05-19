@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard</title>
+    <title>MOH Dashboard admin</title>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.js"
@@ -31,12 +31,12 @@
         </tr>
         </thead>
         <tbody>
-        <!--/*@thymesVar id="user" type="ae.accumed.dashboardadmin.model.UserResponse"*/-->
-        <tr th:each="user: ${data.getUserResponses()}">
+        <!--/*@thymesVar id="user" type="ae.accumed.dashboardadmin.model.IndexUserResponse"*/-->
+        <tr th:each="user: ${data.getIndexUserResponses()}">
             <td th:text="${user.name} + ' / ' + ${user.userName}">Row 1 Data 1</td>
             <td>
                 <!--/*@thymesVar id="hospital" type="ae.accumed.dashboardadmin.model.Hospital"*/-->
-                <div th:each="hospital: ${data.getHospitals()}" th:text="${hospital.getHospitalName}"
+                <div th:each="hospital: ${data.getHospitals()}" th:text="${hospital.getHospitalName}  + ' / ' + ${hospital.getHospitalNameArabic}"
                      th:if="${user.getHospitalIds().contains(hospital.getHospitalId)}"></div>
             </td>
             <td>

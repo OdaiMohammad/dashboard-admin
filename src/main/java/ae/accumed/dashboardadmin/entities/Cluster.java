@@ -19,14 +19,15 @@ public class Cluster {
     private String hospitalName;
 
     @Column(name = "HOSPITAL_NAME_ARABIC")
-    private boolean hospitalNameArabic;
+    private String hospitalNameArabic;
 
     @Column(name = "REGION")
-    private boolean region;
+    private String region;
 
     @Column(name = "REGION_ARABIC")
-    private boolean regionArabic;
+    private String regionArabic;
 
     @Column(name = "CLUSTERING")
-    private boolean clustering;
+    private String clustering;
+
 }

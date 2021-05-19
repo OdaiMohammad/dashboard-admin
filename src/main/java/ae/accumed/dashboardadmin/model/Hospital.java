@@ -18,4 +18,6 @@ public class Hospital {
     private String hospitalId;
 
     private String hospitalName;
+
+    private String hospitalNameArabic;
 }

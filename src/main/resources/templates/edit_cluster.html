@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Edit</title>
+    <title>Edit cluster</title>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.js"
@@ -23,7 +23,7 @@
 </head>
 <body>
 <header th:insert="header.html :: header"></header>
-<form method="POST" th:action="@{/edit}" th:object="${submission}" id="application-form">
+<form method="POST" th:action="@{/cluster}" th:object="${submission}" id="application-form">
     <div class="container-fluid">
         <div class="row">
 
@@ -32,12 +32,11 @@
                 <select id="userName" name="userName" class="select2-selector "
                         style="width: 50%">
                     <option disabled selected>Select user</option>
-                    <!--/*@thymesVar id="user" type="ae.accumed.dashboardadmin.model.IndexUserResponse"*/-->
-                    <option th:each="user: ${data.getIndexUserResponses()}"
+                    <!--/*@thymesVar id="user" type="ae.accumed.dashboardadmin.model.EditClusterUserResponse"*/-->
+                    <option th:each="user: ${data.getUsers()}"
                             th:value="${user.userName}"
                             th:text="${user.name}"
-                            th:if="${user.isActive}"
-                            th:selected="${user.getUserName().equals(currentUser.getUserName())}">
+                            th:if="${user.isActive}">
                     </option>
                 </select>
             </div>
@@ -45,17 +44,25 @@
             <div class="w-100"></div>
 
             <div class="col-6">
-                <label for="hospitalIds"></label>
-                <select id="hospitalIds" name="hospitalIds"
-                        class="select-hospital-multiple select2-selector "
-                        multiple="multiple"
+                <label for="region"></label>
+                <select id="region" name="region" class="select2-selector "
                         style="width: 50%">
-                    <!--/*@thymesVar id="hospital" type="ae.accumed.dashboardadmin.model.Hospital"*/-->
-                    <option th:each="hospital: ${data.getHospitals()}"
-                            th:value="${hospital.getHospitalId}"
-                            th:text="${hospital.getHospitalName} + ' / ' + ${hospital.getHospitalNameArabic}"
-                            th:selected="${currentUser.getHospitalIds().contains(hospital.getHospitalId)}">
+                    <option disabled selected>Select region</option>
+                    <!--/*@thymesVar id="region" type="ae.accumed.dashboardadmin.model.ClusterResponse"*/-->
+                    <option th:each="region: ${data.getClusterResponses()}"
+                            th:value="${region.region}"
+                            th:text="${region.region}  + ' / ' +  ${region.regionArabic}">
                     </option>
+                </select>
+            </div>
+
+            <div class="w-100"></div>
+
+            <div class="col-6">
+                <label for="clustering"></label>
+                <select id="clustering" name="clustering" class="select2-selector select-cluster"
+                        style="width: 50%">
+                    <option disabled selected>Please select region first</option>
                 </select>
             </div>
 
@@ -73,8 +80,14 @@
                     <div th:case="'Success'" class="alert alert-success">
                         <strong>Success!</strong> Operation performed successfully.
                     </div>
-                    <div th:case="'Failed'" class="alert alert-danger">
-                        <strong>Failure!</strong> Operation failed. Please try again
+                    <div th:case="'Please select a user'" class="alert alert-danger">
+                        <strong>Failure!</strong> Please select a user.
+                    </div>
+                    <div th:case="'Please select a region'" class="alert alert-danger">
+                        <strong>Failure!</strong> Please select a region.
+                    </div>
+                    <div th:case="'Please select a cluster'" class="alert alert-danger">
+                        <strong>Failure!</strong> Please select a cluster.
                     </div>
                 </div>
             </div>
@@ -88,17 +101,22 @@
 </script>
 
 <script type="text/javascript" th:inline="javascript">
-    let users =/*[[${data.getIndexUserResponses()}]]*/ 'defaultanyvalue';
-    let userSelector = document.getElementById("userName");
+    let regions =/*[[${data.getClusterResponses()}]]*/ 'defaultanyvalue';
+    let regionsSelector = document.getElementById("region");
 
     function listQ() {
-        let result = users.filter(user => {
-            return user.userName === userSelector.value
+        let result = regions.filter(region => {
+            return region.region === regionsSelector.value
         })[0]
-        $(".select-hospital-multiple").val(result.hospitalIds).trigger('change');
+        var options = [];
+        options.push($('<option></option>').attr("disabled", 'disabled').attr('selected', 'selected').text("Select cluster"));
+        for (var i = 0; i < result.clusters.length; i++) {
+            options.push($('<option></option>').attr("th:value", result.clusters[i]).text(result.clusters[i]));
+        }
+        $(".select-cluster").empty().append(options).trigger('change');
     }
 
-    document.getElementById("userName").onchange = listQ;
+    document.getElementById("region").onchange = listQ;
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"

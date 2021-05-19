@@ -5,7 +5,7 @@ import ae.accumed.dashboardadmin.model.Hospital;
 import ae.accumed.dashboardadmin.entities.User;
 import ae.accumed.dashboardadmin.entities.UserDashboard;
 import ae.accumed.dashboardadmin.model.IndexResponse;
-import ae.accumed.dashboardadmin.model.UserResponse;
+import ae.accumed.dashboardadmin.model.IndexUserResponse;
 import ae.accumed.dashboardadmin.repositories.ClusterRepository;
 import ae.accumed.dashboardadmin.repositories.UserDashboardRepository;
 import ae.accumed.dashboardadmin.repositories.UserRepository;
@@ -32,12 +32,12 @@ public class IndexService {
     public IndexResponse getIndexData() {
         List<User> users = (List<User>) userRepository.findAll();
         List<Cluster> clusters = (List<Cluster>) clusterRepository.findAll();
-        List<UserResponse> userResponses =  users.stream().map(user -> new UserResponse(user.getUserName(), user.isActive(), user.getName())).collect(Collectors.toList());
-        userResponses.forEach(userResponse -> userResponse.setHospitalIds(getUserFacilityLicences(userResponse.getUserName())));
-        ArrayList<UserResponse> filteredUserResponses = (ArrayList<UserResponse>) userResponses.stream().filter(user -> !user.getHospitalIds().isEmpty()).collect(Collectors.toList());
+        List<IndexUserResponse> indexUserRespons =  users.stream().map(user -> new IndexUserResponse(user.getUserName(), user.isActive(), user.getName())).collect(Collectors.toList());
+        indexUserRespons.forEach(indexUserResponse -> indexUserResponse.setHospitalIds(getUserFacilityLicences(indexUserResponse.getUserName())));
+        ArrayList<IndexUserResponse> filteredIndexUserRespons = (ArrayList<IndexUserResponse>) indexUserRespons.stream().filter(user -> !user.getHospitalIds().isEmpty()).collect(Collectors.toList());
         IndexResponse indexResponse = new IndexResponse();
-        indexResponse.setHospitals(clusters.stream().map(cluster -> new Hospital(cluster.getHospitalId(), cluster.getHospitalName())).collect(Collectors.toList()));
-        indexResponse.setUserResponses(filteredUserResponses);
+        indexResponse.setHospitals(clusters.stream().map(cluster -> new Hospital(cluster.getHospitalId(), cluster.getHospitalName(), cluster.getHospitalNameArabic())).collect(Collectors.toList()));
+        indexResponse.setIndexUserResponses(filteredIndexUserRespons);
         return indexResponse;
     }
 

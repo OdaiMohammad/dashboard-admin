@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class IndexResponse {
-    private List<IndexUserResponse> indexUserResponses;
-    private List<Hospital> hospitals;
+public class EditClusterResponse {
+    private List<EditClusterUserResponse> users;
+    private List<ClusterResponse> clusterResponses;
 }
