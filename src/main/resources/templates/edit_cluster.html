@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Edit cluster</title>
+    <title>Edit access by cluster</title>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.js"
@@ -32,7 +32,7 @@
                 <select id="userName" name="userName" class="select2-selector "
                         style="width: 50%">
                     <option disabled selected>Select user</option>
-                    <!--/*@thymesVar id="user" type="ae.accumed.dashboardadmin.model.EditClusterUserResponse"*/-->
+                    <!--/*@thymesVar id="user" type="ae.accumed.dashboardadmin.DTO.response.EditClusterUserResponse"*/-->
                     <option th:each="user: ${data.getUsers()}"
                             th:value="${user.userName}"
                             th:text="${user.name}"
@@ -48,7 +48,7 @@
                 <select id="region" name="region" class="select2-selector "
                         style="width: 50%">
                     <option disabled selected>Select region</option>
-                    <!--/*@thymesVar id="region" type="ae.accumed.dashboardadmin.model.ClusterResponse"*/-->
+                    <!--/*@thymesVar id="region" type="ae.accumed.dashboardadmin.DTO.response.ClusterResponse"*/-->
                     <option th:each="region: ${data.getClusterResponses()}"
                             th:value="${region.region}"
                             th:text="${region.region}  + ' / ' +  ${region.regionArabic}">

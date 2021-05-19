@@ -1,11 +1,11 @@
-package ae.accumed.dashboardadmin.model;
+package ae.accumed.dashboardadmin.DTO.request;
 
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class EditAccessSubmission {
+public class EditAccessRequest {
     private String userName;
 
     private List<String> hospitalIds;

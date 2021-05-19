@@ -1,12 +1,12 @@
 package ae.accumed.dashboardadmin.services;
 
+import ae.accumed.dashboardadmin.DTO.request.EditAccessByClusterRequest;
+import ae.accumed.dashboardadmin.DTO.response.ClusterResponse;
+import ae.accumed.dashboardadmin.DTO.response.EditClusterResponse;
+import ae.accumed.dashboardadmin.DTO.response.EditClusterUserResponse;
 import ae.accumed.dashboardadmin.entities.Cluster;
 import ae.accumed.dashboardadmin.entities.User;
 import ae.accumed.dashboardadmin.entities.UserDashboard;
-import ae.accumed.dashboardadmin.model.ClusterResponse;
-import ae.accumed.dashboardadmin.model.EditClusterResponse;
-import ae.accumed.dashboardadmin.model.EditClusterSubmission;
-import ae.accumed.dashboardadmin.model.EditClusterUserResponse;
 import ae.accumed.dashboardadmin.repositories.ClusterRepository;
 import ae.accumed.dashboardadmin.repositories.UserDashboardRepository;
 import ae.accumed.dashboardadmin.repositories.UserRepository;
@@ -23,13 +23,13 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
-public class EditClusterService {
+public class EditAccessByClusterService {
     private final UserRepository userRepository;
     private final ClusterRepository clusterRepository;
     private final UserDashboardRepository userDashboardRepository;
 
     @Autowired
-    public EditClusterService(UserRepository userRepository, ClusterRepository clusterRepository, UserDashboardRepository userDashboardRepository) {
+    public EditAccessByClusterService(UserRepository userRepository, ClusterRepository clusterRepository, UserDashboardRepository userDashboardRepository) {
         this.userRepository = userRepository;
         this.clusterRepository = clusterRepository;
         this.userDashboardRepository = userDashboardRepository;
@@ -57,13 +57,13 @@ public class EditClusterService {
     }
 
     @Transactional
-    public void saveUserDashboard(EditClusterSubmission editClusterSubmission) {
-        Optional<User> userOptional = userRepository.findById(editClusterSubmission.getUserName());
+    public void saveUserDashboard(EditAccessByClusterRequest editAccessByClusterRequest) {
+        Optional<User> userOptional = userRepository.findById(editAccessByClusterRequest.getUserName());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            List<Cluster> clusters = (List<Cluster>) clusterRepository.findAllByClustering(editClusterSubmission.getClustering());
+            List<Cluster> clusters = (List<Cluster>) clusterRepository.findAllByClustering(editAccessByClusterRequest.getClustering());
             List<UserDashboard> userDashboards = clusters.stream().map(cluster -> new UserDashboard(
-                    editClusterSubmission.getUserName(), cluster.getHospitalName(), cluster.getHospitalId()
+                    editAccessByClusterRequest.getUserName(), cluster.getHospitalName(), cluster.getHospitalId()
             )).collect(Collectors.toList());
             userDashboardRepository.saveAll(userDashboards);
         }

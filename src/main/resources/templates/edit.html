@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Edit</title>
+    <title>Edit access</title>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.js"
@@ -32,7 +32,7 @@
                 <select id="userName" name="userName" class="select2-selector "
                         style="width: 50%">
                     <option disabled selected>Select user</option>
-                    <!--/*@thymesVar id="user" type="ae.accumed.dashboardadmin.model.IndexUserResponse"*/-->
+                    <!--/*@thymesVar id="user" type="ae.accumed.dashboardadmin.DTO.response.IndexUserResponse"*/-->
                     <option th:each="user: ${data.getIndexUserResponses()}"
                             th:value="${user.userName}"
                             th:text="${user.name}"

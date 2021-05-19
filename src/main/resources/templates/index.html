@@ -31,7 +31,7 @@
         </tr>
         </thead>
         <tbody>
-        <!--/*@thymesVar id="user" type="ae.accumed.dashboardadmin.model.IndexUserResponse"*/-->
+        <!--/*@thymesVar id="user" type="ae.accumed.dashboardadmin.DTO.response.IndexUserResponse"*/-->
         <tr th:each="user: ${data.getIndexUserResponses()}">
             <td th:text="${user.name} + ' / ' + ${user.userName}">Row 1 Data 1</td>
             <td>

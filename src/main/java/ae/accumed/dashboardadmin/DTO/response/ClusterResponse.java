@@ -1,9 +1,8 @@
-package ae.accumed.dashboardadmin.model;
+package ae.accumed.dashboardadmin.DTO.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data

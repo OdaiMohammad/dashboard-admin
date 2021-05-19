@@ -1,13 +1,11 @@
-package ae.accumed.dashboardadmin.model;
+package ae.accumed.dashboardadmin.DTO.request;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Data
-public class EditClusterSubmission {
+public class EditAccessByClusterRequest {
     @NotNull(message = "Please select a user")
     private String userName;
 

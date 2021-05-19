@@ -1,9 +1,9 @@
 package ae.accumed.dashboardadmin.controllers;
 
-import ae.accumed.dashboardadmin.model.IndexResponse;
-import ae.accumed.dashboardadmin.model.EditAccessSubmission;
-import ae.accumed.dashboardadmin.model.IndexUserResponse;
-import ae.accumed.dashboardadmin.services.IndexService;
+import ae.accumed.dashboardadmin.DTO.request.EditAccessRequest;
+import ae.accumed.dashboardadmin.DTO.response.IndexResponse;
+import ae.accumed.dashboardadmin.DTO.response.IndexUserResponse;
+import ae.accumed.dashboardadmin.services.ListAccessService;
 import ae.accumed.dashboardadmin.services.UserDashboardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,31 +22,31 @@ import java.util.Optional;
 @Controller
 @Slf4j
 @RequestMapping("/edit")
-public class EditController {
+public class EditAccessController {
 
-    private final IndexService indexService;
+    private final ListAccessService listAccessService;
     private final UserDashboardService userDashboardService;
 
     @Autowired
-    public EditController(IndexService indexService, UserDashboardService userDashboardService) {
-        this.indexService = indexService;
+    public EditAccessController(ListAccessService listAccessService, UserDashboardService userDashboardService) {
+        this.listAccessService = listAccessService;
         this.userDashboardService = userDashboardService;
     }
 
     @GetMapping
     public String edit(Model model) {
-        IndexResponse indexResponse = userDashboardService.getEditData();
+        IndexResponse indexResponse = userDashboardService.getIndexResponse();
         model.addAttribute("data", indexResponse);
-        model.addAttribute("submission", new EditAccessSubmission());
+        model.addAttribute("submission", new EditAccessRequest());
         model.addAttribute("currentUser", new IndexUserResponse("", false, "", new ArrayList<>()));
         return "edit";
     }
 
     @GetMapping("/{userName}")
     public String edit(Model model, @PathVariable String userName) {
-        IndexResponse indexResponse = indexService.getIndexData();
+        IndexResponse indexResponse = listAccessService.getIndexData();
         model.addAttribute("data", indexResponse);
-        model.addAttribute("submission", new EditAccessSubmission());
+        model.addAttribute("submission", new EditAccessRequest());
         if (userName != null) {
             Optional<IndexUserResponse> currentUserResponseOptional = indexResponse.getIndexUserResponses().stream().filter(indexUserResponse -> indexUserResponse.getUserName().equals(userName)).findFirst();
             currentUserResponseOptional.ifPresent(indexUserResponse -> model.addAttribute("currentUser", indexUserResponse));
@@ -57,13 +57,13 @@ public class EditController {
     }
 
     @PostMapping
-    public String saveUserData(EditAccessSubmission editAccessSubmission, Errors errors, RedirectAttributes redirectAttributes) {
+    public String saveUserData(EditAccessRequest editAccessRequest, Errors errors, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("message", "Failed");
         redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
         if (errors.hasErrors())
             return "redirect:/edit";
         try {
-            userDashboardService.saveUserDashboard(editAccessSubmission);
+            userDashboardService.saveUserDashboard(editAccessRequest);
             redirectAttributes.addFlashAttribute("message", "Success");
             redirectAttributes.addFlashAttribute("alertClass", "alert-success");
         } catch (Exception e) {

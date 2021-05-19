@@ -1,4 +1,4 @@
-package ae.accumed.dashboardadmin.model;
+package ae.accumed.dashboardadmin.DTO.response;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
