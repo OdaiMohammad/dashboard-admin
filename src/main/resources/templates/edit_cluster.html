@@ -47,7 +47,7 @@
                 <label for="region"></label>
                 <select id="region" name="region" class="select2-selector "
                         style="width: 50%">
-                    <option disabled selected>Select region</option>
+                    <option disabled selected>Select province</option>
                     <!--/*@thymesVar id="region" type="ae.accumed.dashboardadmin.DTO.response.ClusterResponse"*/-->
                     <option th:each="region: ${data.getClusterResponses()}"
                             th:value="${region.region}"
@@ -62,7 +62,7 @@
                 <label for="clustering"></label>
                 <select id="clustering" name="clustering" class="select2-selector select-cluster"
                         style="width: 50%">
-                    <option disabled selected>Please select region first</option>
+                    <option disabled selected>Please select province first</option>
                 </select>
             </div>
 
@@ -84,7 +84,7 @@
                         <strong>Failure!</strong> Please select a user.
                     </div>
                     <div th:case="'Please select a region'" class="alert alert-danger">
-                        <strong>Failure!</strong> Please select a region.
+                        <strong>Failure!</strong> Please select a province.
                     </div>
                     <div th:case="'Please select a cluster'" class="alert alert-danger">
                         <strong>Failure!</strong> Please select a cluster.

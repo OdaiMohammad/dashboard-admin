@@ -45,8 +45,6 @@ public class EditAccessByClusterController {
                 redirectAttributes.addFlashAttribute("message", "Please select a user");
             else if (editAccessByClusterRequest.getRegion() == null)
                 redirectAttributes.addFlashAttribute("message", "Please select a region");
-            else if (editAccessByClusterRequest.getClustering() == null)
-                redirectAttributes.addFlashAttribute("message", "Please select a cluster");
             redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
             return "redirect:/cluster";
         }

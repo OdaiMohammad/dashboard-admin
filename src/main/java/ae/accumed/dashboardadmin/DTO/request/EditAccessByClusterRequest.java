@@ -12,6 +12,5 @@ public class EditAccessByClusterRequest {
     @NotNull(message = "Please select a region")
     private String region;
 
-    @NotNull(message = "Please select a cluster")
     private String clustering;
 }

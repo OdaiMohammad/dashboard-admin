@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -60,8 +61,12 @@ public class EditAccessByClusterService {
     public void saveUserDashboard(EditAccessByClusterRequest editAccessByClusterRequest) {
         Optional<User> userOptional = userRepository.findById(editAccessByClusterRequest.getUserName());
         if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            List<Cluster> clusters = (List<Cluster>) clusterRepository.findAllByClustering(editAccessByClusterRequest.getClustering());
+            List<Cluster> clusters = new ArrayList<>();
+            if (editAccessByClusterRequest.getClustering() != null) {
+                 clusters.addAll((List<Cluster>) clusterRepository.findAllByClustering(editAccessByClusterRequest.getClustering()));
+            } else {
+                clusters.addAll((List<Cluster>) clusterRepository.findAllByRegion(editAccessByClusterRequest.getRegion()));
+            }
             List<UserDashboard> userDashboards = clusters.stream().map(cluster -> new UserDashboard(
                     editAccessByClusterRequest.getUserName(), cluster.getHospitalName(), cluster.getHospitalId()
             )).collect(Collectors.toList());
